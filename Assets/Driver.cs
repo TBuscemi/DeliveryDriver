@@ -6,19 +6,26 @@ public class Driver : MonoBehaviour
 {
 
     float steerSpeed = 300f;
-    float carSpeed = 10f;
-    // Start is called before the first frame update
-    void Start()
-    {
-       
-    }
+    float carSpeed = 20f;
 
-    // Update is called once per frame
+    [SerializeField] float slowSpeed = 15f;
+    [SerializeField] float boost = 30f;
+
     void Update()
     {
         float steerAmount = Input.GetAxis("Horizontal") * steerSpeed * Time.deltaTime;
         float speedAmount = Input.GetAxis("Vertical") * carSpeed * Time.deltaTime;
         transform.Rotate(0, 0, -steerAmount);
         transform.Translate(0, speedAmount, 0);
+    }
+
+    void OnCollisionEnter2D(Collision2D other) {
+        carSpeed = slowSpeed;
+    }
+
+    void OnTriggerEnter2D(Collider2D other) {
+        if(other.tag == "Boost"){
+            carSpeed = boost;
+        }
     }
 }
